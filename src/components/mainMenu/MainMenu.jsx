@@ -16,16 +16,32 @@ import Button from '@mui/material/Button';
 import BrandLogo from '../../assets/logotip.png'
 import '../mainMenu/MainMenu.css'
 import { BrowserRouter, BrowserRouter as Router, Link, NavLink, Route, Routes } from "react-router-dom";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextareaAutosize, TextField } from '@mui/material';
 
 const drawerWidth = 240;
-const navItems = ['Компании', 'Обо мне', 'Мои работы'];
 
 function MainMenu(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const textAreaRef = React.useRef(null)
+  // const [textareaValue, setTextareaValue] = React.useState('')
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const writeMeFunc = (event) => {
+    // сделать в этой функции запрос на отправление
+    console.log(textAreaRef.current.value, 'данные из инпута')
+
+  }
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const drawer = (
@@ -35,15 +51,23 @@ function MainMenu(props) {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding>
+          <ListItemButton sx={{ textAlign: 'center', }}>
+            <Link to="/companies" className="link_mobile"><ListItemText primary='Компании' /></Link>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <Link to="/about" className="link_mobile"><ListItemText primary='Обо мне' /></Link>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton sx={{ textAlign: 'center' }}>
+            <Link to="/myWorks" className="link_mobile"><ListItemText primary='Мои работы' /></Link>
+          </ListItemButton>
+        </ListItem>
       </List>
-    </Box>
+    </Box >
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -80,7 +104,43 @@ function MainMenu(props) {
             </Button>
 
           </Box>
-          <button className='btn_writeMe_2'>НАПИСАТЬ МНЕ</button>
+          <button className='btn_writeMe_2' onClick={handleClickOpen}>
+            НАПИСАТЬ МНЕ
+          </button>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Связаться со мной &#128579;</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Для того, чтобы связаться со мной, оставьте заявку и заполните поля ниже.&#128071;
+              </DialogContentText>
+              <TextField
+                id="standard-basic"
+                label="Ваше имя"
+                fullWidth
+                variant="standard"
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Ваш email"
+                type="email"
+                fullWidth
+                variant="standard"
+              />
+              <TextareaAutosize
+                fullWidth
+                aria-label="empty textarea"
+                placeholder="Пожалуйста, введите своё сообщение здесь..."
+                style={{ marginTop: '30px', display: 'block', width: '96%', height: '200px', resize: 'none', outline: 0, padding: '10px' }}
+                ref={textAreaRef}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Отмена</Button>
+              <Button onClick={writeMeFunc}>Отправить</Button>
+            </DialogActions>
+          </Dialog>
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -94,13 +154,13 @@ function MainMenu(props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, background: 'linear-gradient(red, blue)', color: '#fff', fontWeight: 900, },
           }}
         >
           {drawer}
         </Drawer>
       </Box>
-    </Box>
+    </Box >
   );
 }
 
