@@ -114,13 +114,12 @@ function MainMenu(props) {
                 Для того, чтобы связаться со мной, оставьте заявку и заполните поля ниже.&#128071;
               </DialogContentText>
               <TextField
+                autoFocus
                 id="standard-basic"
                 label="Ваше имя"
                 fullWidth
-                variant="standard"
-              />
+                variant="standard"              />
               <TextField
-                autoFocus
                 margin="dense"
                 id="name"
                 label="Ваш email"
